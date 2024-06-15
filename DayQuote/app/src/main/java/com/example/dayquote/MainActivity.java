@@ -59,7 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("myData", MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        savedQuotesList = new ArrayList<>();
+        Set<String> savedQuotesSet = sharedPreferences.getStringSet("savedQuotesList", null);
+        if (savedQuotesSet != null) {
+            savedQuotesList = new ArrayList<>(savedQuotesSet);
+        } else {
+            savedQuotesList = new ArrayList<>();
+        }
 
         progressBar.setVisibility(View.VISIBLE);
         RetroFitInstance.getInstance().apiInterface.getQuote().enqueue(new Callback<List<QuoteModel>>() {
